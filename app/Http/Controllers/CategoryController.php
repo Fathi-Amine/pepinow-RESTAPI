@@ -22,6 +22,8 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         //
+        $category = Category::create($request->all());
+        return $category;
     }
 
     /**
@@ -30,6 +32,7 @@ class CategoryController extends Controller
     public function show(Category $category)
     {
         //
+        return $category;
     }
 
     /**
@@ -38,6 +41,9 @@ class CategoryController extends Controller
     public function update(UpdateCategoryRequest $request, Category $category)
     {
         //
+        $category->update($request->all());
+
+        return $category;
     }
 
     /**
@@ -46,5 +52,8 @@ class CategoryController extends Controller
     public function destroy(Category $category)
     {
         //
+        $category->delete();
+
+        return response('',204);
     }
 }
