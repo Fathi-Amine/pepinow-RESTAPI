@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -13,7 +14,15 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return Category::all();
+        $user = Auth::guard('sanctum')->user();
+        $token = $user->currentAccessToken();
+
+        if ($token->expired()) {
+            return response()->json(['message' => 'Token expired'], 401);
+        }else{
+            return Category::all();
+        }
+        
     }
 
     /**
