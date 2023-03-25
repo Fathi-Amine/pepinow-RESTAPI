@@ -10,6 +10,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Laravel\Sanctum\PersonalAccessToken;
+use Spatie\Permission\Models\Role;
 
 class UserController extends Controller
 {
@@ -64,7 +65,7 @@ class UserController extends Controller
             $user = Auth::user();
             $accessToken = $user->createToken('pepinowToken')->plainTextToken;
             $personalAccessToken = PersonalAccessToken::findToken($accessToken);
-            $personalAccessToken->expires_at = now()->addMinutes(2);
+            $personalAccessToken->expires_at = now()->addMinutes(50);
             $personalAccessToken->save();
 
             return response()->json([
@@ -72,9 +73,11 @@ class UserController extends Controller
                 'access_token' => $accessToken,
                 'token_type' => 'Bearer',
             ]);
+        }else{
+            return response()->json(['error' => 'Invalid credentials'], 401);
         }
 
-        return response()->json(['error' => 'Invalid credentials'], 401);
+        
     }
 
     /**
@@ -132,5 +135,21 @@ class UserController extends Controller
         return response()->json(['message' => 'Password reset successfully']);
     }
 
+    public function assignRole(Request $request, User $user)
+    {
+        $role = Role::find($request->role_id);
 
+        if (!$role) {
+            return response()->json([
+                'message' => 'Role not found'
+            ], 404);
+        }
+
+        $user->assignRole($role);
+
+        return response()->json([
+            'message' => 'Role assigned to user successfully',
+            'data' => $user
+        ]);
+    }
 }
