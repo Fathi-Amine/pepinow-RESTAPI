@@ -68,4 +68,23 @@ class PlantController extends Controller
         // Return a response indicating success
         return response()->json(['message' => 'Plant deleted successfully']);
     }
+
+    // public function index(Request $request)
+    // {
+    //     $query = Plant::query();
+        
+    //     // Apply filters
+    //     if ($request->has('category')) {
+    //         $query->whereHas('categories', function($q) use ($request) {
+    //             $q->where('name', $request->category);
+    //         });
+    //     }
+        
+    //     // Retrieve plants
+    //     $plants = $query->with('categories')->get();
+        
+    //     // Return response
+    //     return PlantResource::collection($plants);
+    // }
+
 }
