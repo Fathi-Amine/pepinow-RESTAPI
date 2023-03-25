@@ -14,15 +14,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $user = Auth::guard('sanctum')->user();
-        $token = $user->currentAccessToken();
 
-        if ($token->expired()) {
-            return response()->json(['message' => 'Token expired'], 401);
-        }else{
-            return Category::all();
-        }
-        
+        return Category::all();
     }
 
     /**
