@@ -21,6 +21,7 @@ class PlantResource extends JsonResource
             'price' => $this->price,
             'image' => $this->image,
             'categories' => $this->categories->pluck('category_name'),
+            'user' => $this->user->name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

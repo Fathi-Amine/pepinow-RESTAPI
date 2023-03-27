@@ -11,11 +11,17 @@ class PlantController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * 
      */
     public function index()
     {
         //
-        $plants = Plant::with('categories')->get();
+        // $plants = Plant::with('categories')->get();
+        // return PlantResource::collection($plants);
+        $user = auth()->user();
+        $plants = Plant::with('categories')
+                    ->where('user_id', $user->id)
+                    ->get();
         return PlantResource::collection($plants);
     }
 
@@ -24,8 +30,11 @@ class PlantController extends Controller
      */
     public function store(StorePlantRequest $request)
     {
-        //
-        $plant = Plant::create($request->validated());
+
+        $validatedData = $request->validated();
+        $validatedData['user_id'] = auth()->user()->id;
+        $plant = Plant::create($validatedData);
+        
         $plant->categories()->attach($request->input('categories'));
 
         return response()->json(['message' => 'Plant created successfully'], 201);

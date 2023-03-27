@@ -38,10 +38,11 @@ Route::group(['middleware' => ['auth:sanctum', 'role:Admin']], function(){
     Route::post('/permissions', 'PermissionController@store')->name('permissions.store');
 });
 Route::group(['middleware' => ['auth:sanctum']], function(){
+    Route::apiResource('plant',PlantController::class);
     Route::post('/logout', [UserController::class,'logout']);
     Route::post('/refresh', [UserController::class,'refreshToken']);
     Route::put('/update', [UserController::class,'update']);
     Route::put('/reset', [UserController::class,'resetPassword']);
 });
-Route::apiResource('plant',PlantController::class);
+
 

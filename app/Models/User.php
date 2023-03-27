@@ -25,6 +25,13 @@ class User extends Authenticatable
         'password',
     ];
 
+    protected $appends = ['role'];
+
+    public function getRoleAttribute()
+    {
+        return $this->roles->first()->name ?? null;
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -33,6 +40,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'roles'
     ];
 
     protected $guard_name = 'api';
@@ -45,4 +53,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function plants()
+    {
+        return $this->hasMany(Plant::class);
+    }
 }

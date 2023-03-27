@@ -25,7 +25,8 @@ class UserController extends Controller
         $userValidated = $request->validated();
         $userValidated['password'] = Hash::make($userValidated['password']);
         $user = User::create($userValidated);
-
+        $role = Role::where('name', 'customer')->first();
+        $user->assignRole($role);
         return response()->json([
             'message'=>'user created successfully',
             'user'=>$user,
